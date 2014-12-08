@@ -1,0 +1,185 @@
+* {
+	font-family: Lucida Sans, Arial, Helvetica, sans-serif;
+}
+
+body {
+	margin: 0px auto;
+}
+
+header h1 {
+	font-size: 36px;
+	margin: 0px;
+}
+
+header h2 {
+	font-size: 18px;
+	margin: 0px;
+	color: #888;
+	font-style: italic;
+}
+
+nav ul {
+	list-style: none;
+	padding: 0px;
+	display: block;
+	clear: right;
+	background-color: #666;
+}
+
+nav ul li {
+	display: inline;
+	padding: 5px;
+	height: 24px;
+	border-right: 1px solid #ccc;
+}
+
+nav ul li .nav {
+	color: #EFD3D3;
+	text-decoration: none;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+nav ul li a:hover {
+	color: #fff;
+}
+
+article>header h1 {
+	font-size: 20px;
+	margin-left: 14px;
+}
+
+article>header h1 a {
+	color: #993333;
+}
+
+article>header h1 img {
+	vertical-align: middle;
+}
+
+article>section header h1 {
+	font-size: 16px;
+}
+
+article p {
+	clear: both;
+}
+
+footer p {
+	text-align: center;
+	font-size: 12px;
+	color: #888;
+	margin-top: 24px;
+}
+
+html,body {
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+#div_route_display {
+	height: 25%;
+	margin-left: 10%;
+}
+
+#div_func_display {
+	height: 8%;
+	width: 90%;
+	margin-top : 10px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#div_func_display>label {
+	background-color: #0080ff;
+	color: #ffffff;
+	padding: 5px;
+	border: 1px dashed #ffffff;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+
+#div_func_display>label#left {
+	float: left
+}
+
+#div_func_display>label#center {
+	display: inline-block;
+}
+
+#div_func_display>label#right {
+	float:right;
+}
+
+#div_direction_display,#div_distance_display,#div_weather_display {
+	height: 60%;
+	width: 90%;
+	padding: 0px;
+	border: 1px solid #0080ff;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	border-width: 1px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#div_distance_display>label#place {
+	font-family: "Arial Black";
+	font-size: 12px;
+	width: 100%;
+	color: #0080ff;
+	display: block;
+	margin: 7px 0px;
+	border: 1px solid #0080ff;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+}
+
+#div_distance_display>label#distance {
+	font-family: "Arial Black";
+	font-size: 10px;
+	width: 100%;
+	display: block;
+	margin: 7px 0px;
+}
+
+.route_label {
+	font-size: 12px;
+	font-family: "Arial Black";
+	color: #0080ff;
+	display: block;
+	padding: 10px 0px;
+}
+
+input {
+	display: block;
+	height: 100%;
+	padding: 0px;
+	width: 90%;
+	outline: 0px;
+	outline-offset: 0px;
+	border: 0px;
+	color: #0080ff;
+}
+
+img.logo {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.horizontal {
+	border-top: 2px solid gray;
+	height: 33%;
+}
+
+.horizontal#div_start {
+	border-top: 2px solid white;
+}

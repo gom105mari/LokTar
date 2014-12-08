@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="height=device-height, width=device-width, user-scalable=no">
+<title>Weather layer</title>
+<link rel="stylesheet" type="text/css" href="css/style.css"/>
+<script src="js/main.js"></script>
+<script src="js/rest.js"></script>
+<script
+	src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=weather"></script>
+</head>
+<body>
+	<!--<img class="logo" src="images/Euro.png">-->
+	<div id="div_route_display" >
+		<div class="horizontal" id="div_start">
+			<label class="route_label" id="lbl_start" onclick="btnClick(0);">Start</label>
+		</div>
+		<div class="horizontal" id="div_waypoint">
+			<label class="route_label" onclick="btnClick(1);"> Waypoint </label>
+		</div>
+		<div class="horizontal" id="div_end">
+			<label class="route_label" id="lbl_end" onclick="btnClick(max_place - 1);">End</label>
+		</div>
+		<div class="horizontal"></div>
+	</div>
+	<div id="div_func_display" >
+		<label id="left" onclick="showDirection();">Directions</label>
+		<label id="center" onclick="showDistance();">Distance</label>
+		<label id="right" onclick="showWeather();">Weather</label>
+	</div>
+	<div id="div_direction_display" style="display:none;"></div>
+	<div id="div_distance_display" style="display:none;"></div>
+	<div id="div_weather_display" style="display:none;"></div>
+</body>
+</html>

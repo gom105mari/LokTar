@@ -30,11 +30,23 @@ var init = function() {
             }
         }
     });
+    var default_name;
     for (var i = 0; i < max_place; i++) {
+        if (i === 0) {
+            default_name = default_start;
+        } else if (i === (max_place - 1)) {
+            default_name = default_end;
+        } else {
+            default_name = default_waypoint + " " + i;
+        }
         places.push({
-            "name" : ""
+            "name" : default_name
         });
     }
+
+    makeRoute(0);
+    makeRoute(1);
+    makeRoute(max_place - 1);
 
     directionsDisplay = new google.maps.DirectionsRenderer();
     directionsService = new google.maps.DirectionsService();
@@ -76,45 +88,38 @@ function showDisplay(lat, lng) {
 
     var marker = new google.maps.Marker({
         position : map.getCenter(),
-        draggable:true,
+        draggable : true,
         map : map
     });
 
     directionsDisplay.setMap(map);
 
-    // var weatherLayer = new google.maps.weather.WeatherLayer({
-    // temperatureUnits : google.maps.weather.TemperatureUnit.CELSIUS
-    // });
-    // weatherLayer.setMap(map);
-    // //
-    // var cloudLayer = new google.maps.weather.CloudLayer();
-    // cloudLayer.setMap(map);
-
-     google.maps.event.addListener(marker, 'mouseup', function() {
-         //map.setZoom(8);
-         var latlng = marker.getPosition();
-         map.setCenter(latlng);
-         getAddress(latlng.lat() + "," + latlng.lng());
-     });
+    google.maps.event.addListener(marker, 'mouseup', function() {
+        var latlng = marker.getPosition();
+        map.setCenter(latlng);
+        getAddress(latlng.lat() + "," + latlng.lng());
+    });
 
 }
 
 function getAddress(latlng) {
-	rest.get(
-		'http://maps.googleapis.com/maps/api/geocode/json', 
-		null,
-		{"latlng":latlng,"sensor":"false"},
-		function(data, xhr) {
-	        if (data["status"] === "ZERO_RESULTS") {
-	            console.log("Unsupported places");
-	        } else {
-	            places[current_index]["name"] = data["results"][0]["formatted_address"];
-	            changePlace(current_index);
-	        }
-		},
-		function(data, xhr) { 
-		}
-	);
+    rest
+            .get(
+                    'http://maps.googleapis.com/maps/api/geocode/json',
+                    null,
+                    {
+                        "latlng" : latlng,
+                        "sensor" : "false"
+                    },
+                    function(data, xhr) {
+                        if (data["status"] === "ZERO_RESULTS") {
+                            console.log("Unsupported places");
+                        } else {
+                            places[current_index]["name"] = data["results"][0]["formatted_address"];
+                            makeRoute(current_index);
+                        }
+                    }, function(data, xhr) {
+                    });
 }
 
 function callWeather(index) {
@@ -130,12 +135,10 @@ function callWeather(index) {
         });
     }
 }
-//
+
 function getWeather(data) {
     var display = document.getElementById('div_weather_display');
     var weather = data["weather"];
-    // display.innerHTML = "<label>" + data["name"] + "(" + data["coord"]["lat"]
-    // + ", " + data["coord"]["lon"] + ")</label><br>";
     display.innerHTML = "<label>" + data["name"] + ", "
             + data["sys"]["country"] + "</label><br>";
     for (index in weather) {
@@ -157,34 +160,7 @@ function getWeather(data) {
     display.innerHTML += "</labe><br>";
 
     display.innerHTML += "</tr></tbody></table>";
-
-    // for(index in weather) {
-    // display.innerHTML += "<label>" + weather[index]["main"] + "(" +
-    // weather[index]["description"] + ") </label><br>"
-    // display.innerHTML += "<label>Cloudiness : " +data["clouds"]["all"] + "%
-    // </label><br>"
-    // }
 }
-
-// function clickStart() {
-// var div = document.getElementById("div_route_display");
-// div.innerHTML = "<input id='input_start' placeholder='Input the place of
-// departure' onkeypress='setPlace(0)'>";
-// }
-//
-// function clickWaypoint(index) {
-// var div = document.getElementById("div_route_display");
-// div.innerHTML = "<input id='input_inter' placeholder='Input the place of
-// waypoint' onkeypress='setPlace("
-// + index + ")'>";
-// }
-//
-// function clickEnd() {
-// var div = document.getElementById("div_route_display");
-// div.innerHTML = "<input id='input_end' placeholder='Input the place of
-// arrival' onkeypress='setPlace("
-// + (max_place - 1) + ")'>";
-// }
 
 function btnClick(index) {
     var div_weather = document.getElementById("div_weather_display");
@@ -212,43 +188,27 @@ function btnClick(index) {
     }
 }
 
-function setPlace(index, n) {
+function setPlace(index) {
     if (event.keyCode == 13) {
         convertDiv(0);
-        var div;
-
         var place;
         if (index === 0) {
-            div = document.getElementById("div_start");
             place = document.getElementById("input_start").value;
-            console.log(place);
         } else if (index === max_place - 1) {
-            div = document.getElementById("div_end");
             place = document.getElementById("input_end").value;
         } else {
-            div = document.getElementById("div_waypoint");
             place = inter = document.getElementById("input_waypoint").value;
         }
         if (place !== "") {
             places[index]["name"] = place;
-            var needPlus = true;
-            if (index == 0) {
-                div.innerHTML = "<label class='route_label' id='lbl_start' onclick='btnClick(0)'>"
-                        + place + "</label>";
-            } else if (index == (max_place - 1)) {
-                div.innerHTML = "<label class='route_label' id='lbl_end' onclick='btnClick("
-                        + index + ")'>" + place + "</label>";
-                console.log(index);
-            } else {
-                div.innerHTML = "<label class='route_label' id='lbl_waypoint' onclick='btnClick("
-                        + index + ")'>" + place + "</label>";
-            }
             setLatLng(index);
+        } else {
+            makeRoute(index);
         }
     }
 }
 
-function changePlace(index) {
+function makeRoute(index) {
     var place = places[index]["name"];
     if (index === 0) {
         div = document.getElementById("div_start");
@@ -265,8 +225,27 @@ function changePlace(index) {
             div.innerHTML = "<label class='route_label' id='lbl_end' onclick='btnClick("
                     + index + ")'>" + place + "</label>";
         } else {
-            div.innerHTML = "<label class='route_label' id='lbl_waypoint' onclick='btnClick("
+            div.innerHTML = "";
+            var prefix = "";
+            var postfix = "";
+            if (index === 1) {
+                postfix = "<label class='route_label' id='lbl_waypoint_post' onclick='makeRoute("
+                        + (index + 1) + ")'> ▶</label>";
+            } else if (index === (max_place - 1)) {
+                prefix = "<label class='route_label' id='lbl_waypoint_pre' onclick='makeRoute("
+                        + (index - 1) + ")'>◀ </label>";
+            } else {
+                if ((index + 1) < (max_place - 1)) {
+                    postfix = "<label class='route_label' id='lbl_waypoint_post' onclick='makeRoute("
+                            + (index + 1) + ")'> ▶</label>";
+                }
+                prefix = "<label class='route_label' id='lbl_waypoint_pre' onclick='makeRoute("
+                        + (index - 1) + ")'>◀ </label>";
+            }
+            div.innerHTML += prefix;
+            div.innerHTML += "<label class='route_label' id='lbl_waypoint' onclick='btnClick("
                     + index + ")'>" + place + "</label>";
+            div.innerHTML += postfix;
         }
     }
 }
@@ -321,10 +300,10 @@ function showDistance() {
                     div.innerHTML += "<label id='place'>"
                             + route.legs[i].start_address + "</label>";
                 }
-                div.innerHTML += "<label id='distance'>" + route.legs[i].distance.text
-                        + "</label>";
-                div.innerHTML += "<label id='distance'>" + route.legs[i].duration.text
-                        + "</label>";
+                div.innerHTML += "<label id='distance'>"
+                        + route.legs[i].distance.text + "</label>";
+                div.innerHTML += "<label id='distance'>"
+                        + route.legs[i].duration.text + "</label>";
                 div.innerHTML += "<label id='place'>"
                         + route.legs[i].end_address + "</label>";
             }

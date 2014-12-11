@@ -183,3 +183,7 @@ img.logo {
 .horizontal#div_start {
 	border-top: 2px solid white;
 }
+
+#lbl_waypoint, #lbl_waypoint_pre, #lbl_waypoint_post {
+	display: inline-block;
+}

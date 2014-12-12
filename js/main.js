@@ -131,35 +131,24 @@ function callWeather(index) {
             "lon" : lng
         }, function(data, xhr) {
             getWeather(data);
+            getWeatherForWeek(lat, lng);
         }, function(data, xhr) {
         });
     }
 }
 
 function getWeather(data) {
-    var display = document.getElementById('div_weather_display');
+    var place_display = document.getElementById("weather_place");
+    var display = document.getElementById('div_weather_main_display');
     var weather = data["weather"];
-    display.innerHTML = "<label>" + data["name"] + ", "
+    place_display.innerHTML = "<label>" + data["name"] + ", "
             + data["sys"]["country"] + "</label><br>";
-    for (index in weather) {
-        display.innerHTML += "<img src='" + "http://openweathermap.org/img/w/"
-                + weather[index]["icon"] + ".png' width='32'\/>";
-    }
-    display.innerHTML += "<label class='temp'>"
-            + (data["main"]["temp"] - 273.15).toFixed(1) + " °C</label><br>";
-    display.innerHTML += "<table><tbody><tr><td>";
-    display.innerHTML += "<label>Wind : " + data["wind"]["speed"]
-            + "m/s </label><br>"
-    display.innerHTML += "<label>Cloudiness : " + data["clouds"]["all"]
-            + "% </label><br>"
-    display.innerHTML += "<label>Pressure : " + data["main"]["pressure"]
-            + "hpa </label><br>"
-    display.innerHTML += "<label>Humidity : " + data["main"]["humidity"]
-            + "% </label><br>"
 
-    display.innerHTML += "</labe><br>";
+    makeMainWeather(data);
+}
 
-    display.innerHTML += "</tr></tbody></table>";
+function convertTemp(temp) {
+    return (temp - 273.15).toFixed(1);
 }
 
 function btnClick(index) {
@@ -354,4 +343,48 @@ function convertDiv(index) {
             div_distance.style.display = 'none';
         }
     }
+}
+
+function getWeatherForWeek(lat, lon) {
+    rest.get('http://api.openweathermap.org/data/2.5/forecast/daily', null, {
+        "lat" : lat,
+        "lon" : lon,
+        "cnt" : "7",
+        "mode" : "xml"
+    }, function(data, xhr) {
+        var xml = xhr.responseXML;
+        var date = xml.getElementsByTagName("time");
+        for ( var i in data) {
+            console.log(date[i].getAttribute("day"));
+        }
+    }, function(data, xhr) {
+    });
+}
+
+function makeMainWeather(data) {
+    var div = document.getElementById("div_weather_main_display");
+    div.innerHTML = "";
+    div.innerHTML += "<table id='main_table'><thead><tr><td>Temperature</td><td>Wind</td><td>Cloudiness</td><td>Pressure</td><td>Humidity</td></tr></thead><tbody><tr><td>"
+            + convertTemp(data["main"]["temp"])
+            + "°C</td><td>"
+            + data["wind"]["speed"]
+            + "ms</td><td>"
+            + data["clouds"]["all"]
+            + "%</td><td>"
+            + data["main"]["pressure"]
+            + "hpa</td><td>"
+            + data["main"]["humidity"] + "%</td></tr></tbody></table>";
+}
+
+function makeSubWeather(data) {
+    var div = document.getElementById("div_weather_sub_display");
+    div.innerHTML = "";
+    div.innerHTML += "<table id='main_table'><thead><tr><td>Wind</td><td>Cloudiness</td><td>Pressure</td><td>Humidity</td></tr></thead><tbody><tr><td>"
+            + data["wind"]["speed"]
+            + "ms</td><td>"
+            + data["clouds"]["all"]
+            + "%</td><td>"
+            + data["main"]["pressure"]
+            + "hpa</td><td>"
+            + data["main"]["humidity"] + "%</td></tr></tbody></table>";
 }

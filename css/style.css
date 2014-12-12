@@ -124,7 +124,7 @@ html,body {
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	border-width: 1px;
-	text-align: center;
+	text-align: left;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -155,10 +155,11 @@ html,body {
 	font-family: "Arial Black";
 	color: #0080ff;
 	display: block;
+	font-weight: bold;
 	padding: 10px 0px;
 }
 
-input {
+.horizontal > input {
 	display: block;
 	height: 100%;
 	padding: 0px;
@@ -186,4 +187,43 @@ img.logo {
 
 #lbl_waypoint, #lbl_waypoint_pre, #lbl_waypoint_post {
 	display: inline-block;
+}
+#div_weather_title_display {
+	height: 10%;
+	color: #0080ff;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#div_weather_main_display {
+	height: 40%;
+	color: #e04c8f;
+}
+
+#div_weather_sub_display {
+	height: 50%;
+	color: #3774bf;
+}
+
+#div_weather_title_display > #weather_place {
+	display: block;
+	font-weight: bold;
+	height: 100%;
+	width: 100%;
+	color: #e04c8f;
+	text-align: center;
+	font-size: 25px;
+}
+#main_table>*{
+	display: block;
+	width: 100%;
+	color: #e04c8f;
+	text-align: center;
+	font-size: 16px;
+}
+
+#main_table > tbody{
+	color: #000000;
+	text-align: right;
+	font-size: 15px;
 }

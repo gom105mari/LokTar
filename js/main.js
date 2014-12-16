@@ -123,7 +123,7 @@ function getAddress(latlng) {
 }
 
 function callWeather(index) {
-    if (places[index]["name"] !== "") {
+    if (places[index]["name"] !== "" && (places[index]["name"].indexOf(default_waypoint) == -1)) {
         var lat = places[index]["lat"];
         var lng = places[index]["lng"];
         rest.get('http://api.openweathermap.org/data/2.5/weather', null, {
@@ -248,11 +248,14 @@ function callRoute(callback) {
                 + places[max_place - 1]["lng"];
         var ways = [];
         for (var i = 1; i < (places.length - 1); i++) {
-            if (places[i]["name"] !== "") {
+            if (places[i]["name"] !== "" && (places[i]["name"].indexOf(default_waypoint) == -1)) {
                 ways.push({
                     location : places[i]["lat"] + "," + places[i]["lng"]
                 });
             }
+        }
+        if(ways.length == 0) {
+            ways = null;
         }
 
         var request = {
@@ -350,13 +353,9 @@ function getWeatherForWeek(lat, lon) {
         "lat" : lat,
         "lon" : lon,
         "cnt" : "7",
-        "mode" : "xml"
+        "mode" : "json"
     }, function(data, xhr) {
-        var xml = xhr.responseXML;
-        var date = xml.getElementsByTagName("time");
-        for ( var i in data) {
-            console.log(date[i].getAttribute("day"));
-        }
+        makeSubWeather(data);
     }, function(data, xhr) {
     });
 }
@@ -364,7 +363,7 @@ function getWeatherForWeek(lat, lon) {
 function makeMainWeather(data) {
     var div = document.getElementById("div_weather_main_display");
     div.innerHTML = "";
-    div.innerHTML += "<table id='main_table'><thead><tr><td>Temperature</td><td>Wind</td><td>Cloudiness</td><td>Pressure</td><td>Humidity</td></tr></thead><tbody><tr><td>"
+    div.innerHTML += "<table id='main_table'><thead><tr><th>Temperature</th><th>Wind</th><th>Cloudiness</th><th>Pressure</th><th>Humidity</th></tr></thead><tbody><tr><td>"
             + convertTemp(data["main"]["temp"])
             + "°C</td><td>"
             + data["wind"]["speed"]
@@ -378,13 +377,25 @@ function makeMainWeather(data) {
 
 function makeSubWeather(data) {
     var div = document.getElementById("div_weather_sub_display");
+//    for ( var i in data["list"]) {
+//        console.log(data["list"][i]["weather"][0]["main"]);
+//    }
     div.innerHTML = "";
-    div.innerHTML += "<table id='main_table'><thead><tr><td>Wind</td><td>Cloudiness</td><td>Pressure</td><td>Humidity</td></tr></thead><tbody><tr><td>"
-            + data["wind"]["speed"]
-            + "ms</td><td>"
-            + data["clouds"]["all"]
-            + "%</td><td>"
-            + data["main"]["pressure"]
-            + "hpa</td><td>"
-            + data["main"]["humidity"] + "%</td></tr></tbody></table>";
+    div.innerHTML += "<table id='sub_table'><thead><tr><td>"
+        + data["list"][0]["weather"][0]["main"] + "</td><td>"
+        + data["list"][1]["weather"][0]["main"] + "</td><td>"
+        + data["list"][2]["weather"][0]["main"] + "</td><td>"
+        + data["list"][3]["weather"][0]["main"] + "</td><td>"
+        + data["list"][4]["weather"][0]["main"] + "</td><td>"
+        + data["list"][5]["weather"][0]["main"] + "</td><td>"
+        + data["list"][6]["weather"][0]["main"] + "</td><td>"
+        + "</td></tr></thead><tbody><tr><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][0]["weather"][0]["icon"] + ".png'></td><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][1]["weather"][0]["icon"] + ".png'></td><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][2]["weather"][0]["icon"] + ".png'></td><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][3]["weather"][0]["icon"] + ".png'></td><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][4]["weather"][0]["icon"] + ".png'></td><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][5]["weather"][0]["icon"] + ".png'></td><td>"
+        + "<img src='http://openweathermap.org/img/w/" + data["list"][6]["weather"][0]["icon"] + ".png'></td><td>"
+        + "</tbody></table>";
 }

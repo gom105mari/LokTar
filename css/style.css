@@ -97,10 +97,10 @@ html,body {
 	background-color: #0080ff;
 	color: #ffffff;
 	padding: 5px;
-	border: 1px dashed #ffffff;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;
-	border-radius: 7px;
+	border: 1px solid #ffffff;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
 }
 
 #div_func_display>label#left {
@@ -154,7 +154,7 @@ html,body {
 	font-size: 12px;
 	font-family: "Arial Black";
 	color: #0080ff;
-	display: block;
+	vertical-align: bottom;
 	font-weight: bold;
 	padding: 10px 0px;
 }
@@ -170,10 +170,12 @@ html,body {
 	color: #0080ff;
 }
 
-img.logo {
+img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
+	vertical-align: middle;
+	width: 50%;
 }
 
 .horizontal {
@@ -186,7 +188,7 @@ img.logo {
 }
 
 #lbl_waypoint, #lbl_waypoint_pre, #lbl_waypoint_post {
-	display: inline-block;
+	
 }
 #div_weather_title_display {
 	height: 10%;
@@ -219,11 +221,13 @@ img.logo {
 	width: 100%;
 	color: #e04c8f;
 	text-align: center;
-	font-size: 16px;
+	font-size: 13px;
+	font-family: "Oswald",sans-serif;
+	margin-top: 20px;
 }
 
 #main_table > tbody{
 	color: #000000;
 	text-align: right;
-	font-size: 15px;
+	font-size: 12px;
 }

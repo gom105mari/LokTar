@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/Loktar" version="1.0.0" viewmodes="maximized">
     <access origin="*" subdomains="true"></access>
-    <tizen:application id="HbGcKJNNaB.Loktar" package="HbGcKJNNaB" required_version="2.3"/>
+    <tizen:application id="HbGcKJNNaB.Loktar" package="HbGcKJNNaB" required_version="1.0"/>
+    <author href="https://github.com/gom105mari/LokTar" email="gom105mari@gmail.com">gom105mari</author>
     <content src="index.html"/>
     <feature name="http://tizen.org/feature/screen.size.all"/>
-    <icon src="Euro.png" height="117" width="117"/>
+    <icon src="images/Euro.png" height="117" width="117"/>
     <name>Loktar</name>
     <tizen:privilege name="http://tizen.org/privilege/internet"/>
     <tizen:privilege name="http://tizen.org/privilege/application.launch"/>
     <tizen:profile name="mobile"/>
+    <tizen:setting screen-orientation="portrait" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
 </widget>
